@@ -59,7 +59,6 @@ const exec = (MSPMStuff, cb) =>{
             if(e) return cb({name: name, exitCode: 1, value: e})
             else nztk.log.success(`overwritten ./SHELL/temp/MSPM/${name}/backend/configs/loqa/credencials.json`, 2, '')
 
-<<<<<<< HEAD
             fsextra.move(`./SHELL/temp/MSPM/${name}/backend/configs/.`, `./SHELL/configs/.`, {overwrite:true}, (e) =>{
 
                 if(e) return cb({name: name, exitCode: 1, value: e})
@@ -67,15 +66,6 @@ const exec = (MSPMStuff, cb) =>{
 
                     if(e) return cb({name: name, exitCode: 1, value: e})
                     fsextra.move(`./SHELL/temp/MSPM/${name}/backend/other/.`, `./SHELL/other/.`, {overwrite:true}, (e) =>{
-=======
-            fsextra.move(`./SHELL/temp/MSPM/${name}/backend/configs/.`, `./SHELL/configs/.`, (e) =>{
-
-                if(e) return cb({name: name, exitCode: 1, value: e})
-                fsextra.move(`./SHELL/temp/MSPM/${name}/backend/programs/loqa.app.js`, `./SHELL/programs/app.loqa.js`, (e) =>{
-
-                    if(e) return cb({name: name, exitCode: 1, value: e})
-                    fsextra.move(`./SHELL/temp/MSPM/${name}/backend/other/.`, `./SHELL/other/.`, (e) =>{
->>>>>>> 36a9878df98810ae2f65fe8eff98ee0ac0d6a98c
 
                         if(e) return cb({name: name, exitCode: 1, value: e})
                         nztk.log.success(`installing ${name} finished`, 2, '')
