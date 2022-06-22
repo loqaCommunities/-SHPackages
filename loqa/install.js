@@ -41,9 +41,11 @@ const exec = (MSPMStuff, cb) =>{
 
     // all of your code
 
+    console.clear()
     process.stdout.write(`please input your mongoDB link > `)
+
     mutableStdout.muted = true
-    rl.question('', (a) =>{
+    rl.question('please input your mongoDB link > ', (a) =>{
 
         mutableStdout.muted = false
         if(a) nztk.log.success(`got the link`, 2, "")
@@ -56,13 +58,13 @@ const exec = (MSPMStuff, cb) =>{
             if(e) return cb({name: name, exitCode: 1, value: e})
             else nztk.log.success(`overwritten ./SHELL/temp/MSPM/${name}/backend/configs/loqa/credencials.json`, 2, '')
 
-            nztk.moveFile(`./SHELL/temp/MSPM/${name}/backend/configs/`, `./SHELL/configs/`, (e) =>{
+            nztk.moveFile(`./SHELL/temp/MSPM/${name}/backend/configs/.`, `./SHELL/configs/.`, (e) =>{
 
                 if(e) return cb({name: name, exitCode: 1, value: e})
                 nztk.moveFile(`./SHELL/temp/MSPM/${name}/backend/programs/loqa.app.js`, `./SHELL/programs/app.loqa.js`, (e) =>{
 
                     if(e) return cb({name: name, exitCode: 1, value: e})
-                    nztk.moveFile(`./SHELL/temp/MSPM/${name}/backend/other`, `./SHELL/other`, (e) =>{
+                    nztk.moveFile(`./SHELL/temp/MSPM/${name}/backend/other/.`, `./SHELL/other/.`, (e) =>{
 
                         if(e) return cb({name: name, exitCode: 1, value: e})
                         nztk.log.success(`installing ${name} finished`, 2, '')
