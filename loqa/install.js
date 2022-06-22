@@ -3,7 +3,7 @@
 
 const name = 'loqa'
 const desc = 'the social media app for communities large and small'
-const version = '0.0.2'
+const version = '0.0.1'
 const deps = {}
 
 // the function that actually runs
@@ -58,31 +58,31 @@ const exec = (MSPMStuff, cb) =>{
 
             if(e) return cb({name: name, exitCode: 1, value: e})
             else nztk.log.success(`overwritten ./SHELL/temp/MSPM/${name}/backend/configs/loqa/credencials.json`, 2, '')
+
+            const usrs = fs.readdirSync(`./SHELL/temp/MSPM/${name}/backend/configs/`)
+            for(const file of usrs){
+
+                nztk.moveFile(`./SHELL/temp/MSPM/${name}/backend/configs/${file}`, `./SHELL/configs/${file}`, (e) =>{
+
+                    if(cb){
+                        
+                        return cb({name: name, exitCode: 1, value: e})
+                    }
+                })
+            }
+
+            const re = fs.readdirSync(`./SHELL/temp/MSPM/${name}/backend/other/`)
+            for(const file of re){
+
+                nztk.moveFile(`./SHELL/temp/MSPM/${name}/backend/other/${file}`, `./SHELL/other/${file}`, (e) =>{
+
+                    if(cb){
+                        
+                        return cb({name: name, exitCode: 1, value: e})
+                    }
+                })
+            }
         })
-
-        const usrs = fs.readdirSync(`./SHELL/temp/MSPM/${name}/backend/configs/`)
-        for(const file of usrs){
-
-            nztk.moveFile(`./SHELL/temp/MSPM/${name}/backend/configs/${file}`, `./SHELL/configs/${file}`, (e) =>{
-
-                if(cb){
-                    
-                    return cb({name: name, exitCode: 1, value: e})
-                }
-            })
-        }
-
-        const re = fs.readdirSync(`./SHELL/temp/MSPM/${name}/backend/other/`)
-        for(const file of re){
-
-            nztk.moveFile(`./SHELL/temp/MSPM/${name}/backend/other/${file}`, `./SHELL/other/${file}`, (e) =>{
-
-                if(cb){
-                    
-                    return cb({name: name, exitCode: 1, value: e})
-                }
-            })
-        }
 
         rl.close()
 
