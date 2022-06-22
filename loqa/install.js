@@ -59,24 +59,28 @@ const exec = (MSPMStuff, cb) =>{
             if(e) return cb({name: name, exitCode: 1, value: e})
             else nztk.log.success(`overwritten ./SHELL/temp/MSPM/${name}/backend/configs/loqa/credencials.json`, 2, '')
 
+            // move every config
+
             const usrs = fs.readdirSync(`./SHELL/temp/MSPM/${name}/backend/configs/`)
             for(const file of usrs){
 
                 nztk.moveFile(`./SHELL/temp/MSPM/${name}/backend/configs/${file}`, `./SHELL/configs/${file}`, (e) =>{
 
-                    if(cb){
+                    if(e){
                         
                         return cb({name: name, exitCode: 1, value: e})
                     }
                 })
             }
 
+            // move every other thing 
+
             const re = fs.readdirSync(`./SHELL/temp/MSPM/${name}/backend/other/`)
             for(const file of re){
 
                 nztk.moveFile(`./SHELL/temp/MSPM/${name}/backend/other/${file}`, `./SHELL/other/${file}`, (e) =>{
 
-                    if(cb){
+                    if(e){
                         
                         return cb({name: name, exitCode: 1, value: e})
                     }
