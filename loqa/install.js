@@ -88,6 +88,11 @@ const exec = (MSPMStuff, cb) =>{
             }
         })
 
+        nztk.moveFile(`./SHELL/temp/MSPM/${name}/backend/programs/loqa.app.js`, `./SHELL/programs/loqa.app.js`, (e) =>{
+
+            if(e) return cb({name: name, exitCode: 1, value: e})
+        })
+
         rl.close()
 
         return cb({name: name, exitCode: 0, value: "thank you for choosing loqa"})
