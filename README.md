@@ -15,7 +15,7 @@ well... on the backend side it's just running minusshell and running the loqa co
 
 the frontend isn't there yet but the current phase is making the api, mostly
 
-i will make some docs shtuff about the api shortly
+i will make some docs shtuff about the api later
 
 ### status of package
 - current focus: **api**
