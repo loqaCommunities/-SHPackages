@@ -15,6 +15,7 @@ const exec = (MSPMStuff, cb) =>{
     const NZTK = require('../../../other/NZTK')
     const nztk = new NZTK(`${name} installer`, MSPMStuff.users.current)
     const fs = require('fs')
+    const fsextra = require('fs-extra')
     var Writable = require('stream').Writable;
     var mutableStdout = new Writable({
 
@@ -58,13 +59,13 @@ const exec = (MSPMStuff, cb) =>{
             if(e) return cb({name: name, exitCode: 1, value: e})
             else nztk.log.success(`overwritten ./SHELL/temp/MSPM/${name}/backend/configs/loqa/credencials.json`, 2, '')
 
-            nztk.moveFile(`./SHELL/temp/MSPM/${name}/backend/configs/.`, `./SHELL/configs/.`, (e) =>{
+            fsextra.move(`./SHELL/temp/MSPM/${name}/backend/configs/.`, `./SHELL/configs/.`, (e) =>{
 
                 if(e) return cb({name: name, exitCode: 1, value: e})
-                nztk.moveFile(`./SHELL/temp/MSPM/${name}/backend/programs/loqa.app.js`, `./SHELL/programs/app.loqa.js`, (e) =>{
+                fsextra.move(`./SHELL/temp/MSPM/${name}/backend/programs/loqa.app.js`, `./SHELL/programs/app.loqa.js`, (e) =>{
 
                     if(e) return cb({name: name, exitCode: 1, value: e})
-                    nztk.moveFile(`./SHELL/temp/MSPM/${name}/backend/other/.`, `./SHELL/other/.`, (e) =>{
+                    fsextra.move(`./SHELL/temp/MSPM/${name}/backend/other/.`, `./SHELL/other/.`, (e) =>{
 
                         if(e) return cb({name: name, exitCode: 1, value: e})
                         nztk.log.success(`installing ${name} finished`, 2, '')
