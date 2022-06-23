@@ -40,9 +40,11 @@ router.put(`/communities/:id/:option`, async (req, res) =>{
         await !user && res.status(400).json(`couldn't check user`)
         const UID = user._id
 
-        nztk.log.warn(`${OID} = ${UID}: ${OID == UID}`, 2)
+        nztk.log.warn(`${OID} = ${UID} (is the requester owner): ${OID == UID}`, 2)
     
         switch(req.params.option){
+
+            // change the name of a community
 
             case "name":
                 if(OID != UID) return res.status(400).json('invalid permissions')
@@ -51,6 +53,7 @@ router.put(`/communities/:id/:option`, async (req, res) =>{
                     if(!req.body.name || req.body.name.length < 5 || req.body.name.length > 199) return res.status(400).json(`invalid name`)
                     const oldName = community.name
                     community.name = await req.body.name || oldName
+                    await community.save()
                     nztk.log.success(`changed ${oldName} to ${req.body.name}`, 1, 'edit')
                     res.status(200).json(community)
                 }catch(err){
@@ -59,6 +62,26 @@ router.put(`/communities/:id/:option`, async (req, res) =>{
                     return res.status(500).json(err)
                 }
                 break
+            
+            // change it's owner
+
+            case "owner":
+                if(OID != UID) return res.status(400).json('invalid permissions')
+                try{
+
+                    const newOwner = await User.findById(req.body.newOwnerID)
+                    !newOwner && res.status(400).json(`this person does not exist`)
+                    if(!community.members.includes(newOwner._id)) return res.status(400).json(`this person isn't in this community`)
+
+                    community.owner = await newOwner._id
+                    await community.save()
+                    res.status(200).json(community)
+                }catch(err){
+
+                    await nztk.log.error(err, 1, 'edit')
+                    return res.status(500).json(err)
+                }
+            break
     
             default:
                 res.status(400).json(`invalid option`)

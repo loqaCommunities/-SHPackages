@@ -88,3 +88,28 @@ router.get(`/:id`, async (req, res) =>{
         return res.status(500).json(err)
     }
 })
+
+// join a community
+
+router.post(`/:id/join`, async (req, res) =>{
+
+    try{
+
+        const user = await getUserT(req.body.token)
+        await !user && res.status(400).json(`couldn't validate the user`)
+
+        const community = await Community.findById(req.params.id)
+        await !community && res.status(400).json(`can't find a community with the id of ${req.params.id}`)
+
+        if(community.members.includes(user._id)) return res.status(400).json(`you already are in this community`)
+
+        await community.members.push(user._id)
+        await community.save()
+
+        res.status(200).json(community)
+    }catch(err){
+
+        nztk.log.error(err, 1, 'communities')
+        return res.status(500).json(err)
+    }
+})
