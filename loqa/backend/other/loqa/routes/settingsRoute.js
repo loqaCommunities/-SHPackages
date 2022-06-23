@@ -61,7 +61,7 @@ router.put(`/communities/:id/:option`, async (req, res) =>{
                     await nztk.log.error(err, 1, 'edit')
                     return res.status(500).json(err)
                 }
-                break
+            break
             
             // change it's owner
 
@@ -74,6 +74,23 @@ router.put(`/communities/:id/:option`, async (req, res) =>{
                     if(!community.members.includes(newOwner._id)) return res.status(400).json(`this person isn't in this community`)
 
                     community.owner = await newOwner._id
+                    await community.save()
+                    res.status(200).json(community)
+                }catch(err){
+
+                    await nztk.log.error(err, 1, 'edit')
+                    return res.status(500).json(err)
+                }
+            break
+
+            // change it's description/about 
+
+            case "about":
+                if(OID != UID) return res.status(400).json('invalid permissions')
+                try{
+
+                    if(!req.body.about || req.body.about.length < 2 || req.body.about.length > 1000) return res.status(400).json(`invalid server description`)
+                    community.about = await req.body.about
                     await community.save()
                     res.status(200).json(community)
                 }catch(err){
