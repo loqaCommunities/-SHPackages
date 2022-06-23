@@ -26,6 +26,7 @@ const exec = (NZSHHStuff, cb) =>{
 
     const authRoute = require('../other/loqa/routes/authRoute')
     const communitiesRoute = require('../other/loqa/routes/communitiesRoute')
+    const settingsRoute = require('../other/loqa/routes/settingsRoute')
 
     // const socket = require('./socket/main')
 
@@ -92,6 +93,7 @@ const exec = (NZSHHStuff, cb) =>{
 
     app.use('/api/auth', authRoute)
     app.use('/api/communities', communitiesRoute)
+    app.use(`/api/settings`, settingsRoute)
         
     // server
 

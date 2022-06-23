@@ -12,11 +12,19 @@ const Token = require('../models/token')
 
 module.exports = router
 
+const getUserT = async (token) =>{
+
+    const uToken = await Token.findOne({token: token})
+    const user = await User.findById(uToken.userID)
+    nztk.log.normal(user, 2, '')
+    return user
+}
+
 // create a community
 
 router.post(`/create`, async (req, res) =>{
 
-    const user = await Token.findOne({token: req.body.token})
+    const user = await getUserT(req.body.token)
     await !user && res.status(400).json("invalid token")
 
     try{
@@ -33,32 +41,6 @@ router.post(`/create`, async (req, res) =>{
         await newCommunity.save()
 
         res.status(200).json(newCommunity)
-    }catch(err){
-
-        await nztk.log.error(err, 1, 'communities')
-        return res.status(500).json(err)
-    }
-})
-
-// update a community
-// TODO: let people other than owners use this w/ some perms system
-
-router.put(`/edit/:id`, async (req, res) =>{
-
-    try{
-        
-        const user = await Token.findOne({token: req.body.token})
-        await !user && res.status(400).json("invalid token")
-
-        const community = await Community.findById(req.params.id)
-        await !community && res.status(400).json(`can't find a community with an id of ${req.params.id}`)
-
-        if(!user._id === community.owner){
-
-            res.status(400).json(`not enough permissions`)
-        }
-
-        res.status(200).json(community)
     }catch(err){
 
         await nztk.log.error(err, 1, 'communities')

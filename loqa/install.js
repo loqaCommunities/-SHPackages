@@ -59,22 +59,43 @@ const exec = (MSPMStuff, cb) =>{
             if(e) return cb({name: name, exitCode: 1, value: e})
             else nztk.log.success(`overwritten ./SHELL/temp/MSPM/${name}/backend/configs/loqa/credencials.json`, 2, '')
 
-            fsextra.move(`./SHELL/temp/MSPM/${name}/backend/configs/.`, `./SHELL/configs/.`, {overwrite:true}, (e) =>{
+            // move every config
 
-                if(e) return cb({name: name, exitCode: 1, value: e})
-                fsextra.move(`./SHELL/temp/MSPM/${name}/backend/programs/loqa.app.js`, `./SHELL/programs/app.loqa.js`, {overwrite:true}, (e) =>{
+            const usrs = fs.readdirSync(`./SHELL/temp/MSPM/${name}/backend/configs/`)
+            for(const file of usrs){
 
-                    if(e) return cb({name: name, exitCode: 1, value: e})
-                    fsextra.move(`./SHELL/temp/MSPM/${name}/backend/other/.`, `./SHELL/other/.`, {overwrite:true}, (e) =>{
+                nztk.moveFile(`./SHELL/temp/MSPM/${name}/backend/configs/${file}`, `./SHELL/configs/${file}`, (e) =>{
 
-                        if(e) return cb({name: name, exitCode: 1, value: e})
-                        nztk.log.success(`installing ${name} finished`, 2, '')
-                        rl.close()
-                        cb({name: name, exitCode: 0, value: 'installing finished, thank you for choosing loqa.'})
-                    })
-                }) 
-            })
+                    if(e){
+                        
+                        return cb({name: name, exitCode: 1, value: e})
+                    }
+                })
+            }
+
+            // move every other thing 
+
+            const re = fs.readdirSync(`./SHELL/temp/MSPM/${name}/backend/other/`)
+            for(const file of re){
+
+                nztk.moveFile(`./SHELL/temp/MSPM/${name}/backend/other/${file}`, `./SHELL/other/${file}`, (e) =>{
+
+                    if(e){
+                        
+                        return cb({name: name, exitCode: 1, value: e})
+                    }
+                })
+            }
         })
+
+        nztk.moveFile(`./SHELL/temp/MSPM/${name}/backend/programs/loqa.app.js`, `./SHELL/programs/loqa.app.js`, (e) =>{
+
+            if(e) return cb({name: name, exitCode: 1, value: e})
+        })
+
+        rl.close()
+
+        return cb({name: name, exitCode: 0, value: "thank you for choosing loqa"})
     })
 }
 
