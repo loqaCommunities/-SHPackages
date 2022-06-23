@@ -102,11 +102,110 @@ router.post(`/:id/join`, async (req, res) =>{
         await !community && res.status(400).json(`can't find a community with the id of ${req.params.id}`)
 
         if(community.members.includes(user._id)) return res.status(400).json(`you already are in this community`)
+        if(community.bans.includes(user._id)) return res.status(400).json(`this user is banned from this community`)
 
         await community.members.push(user._id)
         await community.save()
 
         res.status(200).json(community)
+    }catch(err){
+
+        nztk.log.error(err, 1, 'communities')
+        return res.status(500).json(err)
+    }
+})
+
+// delete a community
+
+router.delete(`/:id/`, async (req, res) =>{
+
+    try{
+
+        const community = await Community.findById(req.params.id)
+        nztk.log.normal(community.owner, 2)
+        await !community && res.status(400).json(`can't find a community with an id of ${req.params.id}`)
+        const OID = community.owner
+    
+        const user = await getUserT(req.body.token)
+        nztk.log.normal(user._id, 2)
+        await !user && res.status(400).json(`couldn't check user`)
+        const UID = user._id
+
+        nztk.log.warn(`${OID} = ${UID} (is the requester owner): ${OID == UID}`, 2)
+        if(OID != UID) return res.status(400).json(`only this community's owner can destroy it`)
+
+        await Community.deleteOne({_id: community._id})
+        res.status(200).json(`community shattered`)
+    }catch(err){
+
+        nztk.log.error(err, 1, 'communities')
+        return res.status(500).json(err)
+    }
+})
+
+// ban somebody
+
+router.delete('/:id/ban', async (req, res) =>{
+
+    try{
+
+        const community = await Community.findById(req.params.id)
+        nztk.log.normal(community.owner, 2)
+        await !community && res.status(400).json(`can't find a community with an id of ${req.params.id}`)
+        const OID = community.owner
+    
+        const user = await getUserT(req.body.token)
+        nztk.log.normal(user._id, 2)
+        await !user && res.status(400).json(`couldn't check user`)
+        const UID = user._id
+
+        nztk.log.warn(`${OID} = ${UID} (is the requester owner): ${OID == UID}`, 2)
+        if(OID != UID) return res.status(400).json(`invalid permissions`)
+
+        nztk.log.warn(`${community.members}, includes ${req.body.user}: ${community.members.includes(req.body.user)}`,  2,  "")
+        if(!req.body.user || !community.members.includes(req.body.user)) return res.status(400).json(`invalid user`)
+
+        if(community.bans.includes(req.body.user)) return res.status(400).json(`user is already banned`)
+
+        const index = await community.members.indexOf(req.body.user)
+        await community.members.splice(index, 1)
+        await community.bans.push(req.body.user)
+        await community.save()
+        res.status(200).json(`user was banned`)
+    }catch(err){
+
+        nztk.log.error(err, 1, 'communities')
+        return res.status(500).json(err)
+    }
+})
+
+// unban somebody
+
+router.delete('/:id/unban', async (req, res) =>{
+
+    try{
+
+        const community = await Community.findById(req.params.id)
+        nztk.log.normal(community.owner, 2)
+        await !community && res.status(400).json(`can't find a community with an id of ${req.params.id}`)
+        const OID = community.owner
+    
+        const user = await getUserT(req.body.token)
+        nztk.log.normal(user._id, 2)
+        await !user && res.status(400).json(`couldn't check user`)
+        const UID = user._id
+
+        nztk.log.warn(`${OID} = ${UID} (is the requester owner): ${OID == UID}`, 2)
+        if(OID != UID) return res.status(400).json(`invalid permissions`)
+
+        if(!req.body.user || !community.bans.includes(req.body.user)) return res.status(400).json(`invalid user`)
+
+        if(!community.bans.includes(req.body.user)) return res.status(400).json(`user is not banned`)
+
+        const index = await community.members.indexOf(req.body.user)
+        await community.bans.splice(index, 1)
+        await community.save()
+        res.status(200).json(`user was unbanned`)
     }catch(err){
 
         nztk.log.error(err, 1, 'communities')
