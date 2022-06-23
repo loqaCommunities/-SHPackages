@@ -99,6 +99,23 @@ router.put(`/communities/:id/:option`, async (req, res) =>{
                     return res.status(500).json(err)
                 }
             break
+
+            // change it's rules
+
+            case "rules":
+                if(OID != UID) return res.status(400).json(`invalid permissions`)
+                try{
+
+                    if(!req.body.rules || req.body.rules.length < 2 || req.body.rules.length > 1000) return res.status(400).json(`invalid server rules`)
+                    community.rules = await req.body.rules
+                    await community.save()
+                    res.status(200).json(community)
+                }catch(err){
+
+                    await nztk.log.error(err, 1, 'edit')
+                    return res.status(500).json(err)
+                }
+            break
     
             default:
                 res.status(400).json(`invalid option`)
