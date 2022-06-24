@@ -1,0 +1,110 @@
+{
+
+    "nonSettings": {
+
+        "icon": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.UvobdGmUpxdAqYs_EcacWwHaEK%26pid%3DApi&f=1",
+        "banner": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.UvobdGmUpxdAqYs_EcacWwHaEK%26pid%3DApi&f=1",
+        "rules": "1. no amongus\n2. no amongus",
+        "about": "a community of everything and nothing"
+    },
+    "settings": {
+
+        "overview": {
+    
+            "sysMessages": {
+    
+                "welcome": {
+    
+                    "title": "'USER' has joined",
+                    "content": {
+    
+                        "invite": ["'USER' has entered 'COMMUNITYNAME' which 'INVITER' helped them to do.\nsay hello, 'USER'"],
+                        "discover": ["'USER' has entered 'COMMUNITYNAME' from the discover panel.\nsay hello, 'USER'"]
+                    }
+                },
+                "goodbye": {
+
+                    "title": "'USER' has left",
+                    "content": ["goodbye, 'USER'"]
+                },
+                "ban": {
+
+                    "title": "'USER' was banned",
+                    "content": ["'USER' was banned."]
+                }
+            },
+            "notifications": 0
+        },
+        "roles": {
+
+            "default": {},
+            "coOwner": {},
+            "all": []
+        },
+        "emojis": [],
+        "logs": [],
+        "webhooks": [],
+        "vanityURL": false,
+        "public": {
+
+            "findable": false,
+            "welcomeScreen": {},
+            "mainLanguage": "en_US",
+            "partner": false,
+            "official": false
+        },
+        "sections": {
+
+            "home": {
+
+                "sections": [
+
+                    {"name": "everything", "enabled": true},
+                    {"name": "announcements", "enabled": true},
+                    {"name": "rules", "enabled": true},
+                    {"name": "new and popular", "enabled": true},
+                    {"name": "videos", "enabled": true},
+                    {"name": "unread", "enabled": true},
+                    {"name": "events", "enabled": true}
+                ]
+            },
+            "chat": {
+
+                "channels": [
+
+                    {"name": "uncategorized", "permOverwrites": [
+
+                        {"role": "*", "permission": "delete", "value": false},
+                        {"role": "*", "permission": "editName", "value": false}
+                    ], "channels": [
+                        
+                    ]},
+                    {"name": "channels", "permOverwrites": [
+                        
+                    ], "channels": [
+
+                        {"type": "textChannel", "name": "text", "icon": "default'HASHTAG'", "permOverwrites": [
+                            
+                        ]},
+                        {"type": "voiceChannel", "name": "voice", "icon": "default'VOICE'", "permOverwrites": [
+                            
+                        ]}
+                    ]}
+                ]
+            },
+            "calendar": {
+
+                "events": [],
+                "allowUGC": false
+            },
+            "forums": {
+
+                "sections": []
+            },
+            "watch": {
+
+                "memberVideos": true
+            }
+        }
+    }
+}
