@@ -12,10 +12,10 @@ const userSchema = new mongus.Schema({
     followers:{type:Array, default:[]},
     followings:{type:Array, default:[]},
     isAdmin:{type:Boolean, default:false},
-    online: {type:Boolean, required:false, default:false},
     interests: {type:Array, required:false, default:[]},
     friendCodeIsEmail: {type:Boolean, required:true},
-    isBot: {type:Boolean, required:true}
+    isBot: {type:Boolean, required:true},
+    memberOf: {type:Array, required:false, default:[]}
 }, {timestamps:true})
 
 module.exports = mongus.model("User", userSchema)

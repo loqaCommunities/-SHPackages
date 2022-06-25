@@ -61,6 +61,9 @@ router.post(`/create`, async (req, res) =>{
 
         await ownerMember.save()
 
+        await user.memberOf.push(newCommunity._id)
+        await user.save()
+
         await newCommunity.members.push(ownerMember._id)
         await newCommunity.settings.leveling.rewards.push({level: 10, role: defaultRole._id})
         await newCommunity.settings.roles.all.push(defaultRole._id)
