@@ -8,7 +8,8 @@ const roleSchema = new mongus.Schema({
     communityID: {type:String, required:true},
     color: {type:String, required:false, default:"#000000"},
     icon: {type:String, required:false, default:"default'MEMBER'"},
-    permOverwrites: {type:Array, require:false, default:[]}
+    permOverwrites: {type:Array, required:false, default:[]},
+    muted: {type:Boolean, required:false, default:false}
 }, {timestamps:true})
 
 module.exports = mongus.model('roles', roleSchema)

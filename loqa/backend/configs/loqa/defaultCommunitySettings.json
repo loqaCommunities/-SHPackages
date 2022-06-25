@@ -37,8 +37,110 @@
         },
         "roles": {
 
-            "default": {},
-            "coOwner": {},
+            "everyone": {"name": "everyone", "color": "#000000", "icon": "default'MEMBER'", "permOverwrites": [
+
+                {"name": "chat", "perms": {
+
+                    "sendMessages": true,
+                    "manageMessages": {
+
+                        "delete": false,
+                        "editReactions": false
+                    },
+                    "manageMembers": false,
+                    "speakInVC": true,
+                    "joinVC": true,
+                    "listenToVC": true,
+                    "checkTab": true,
+                    "react": true,
+                    "threads": {
+
+                        "create": true,
+                        "edit": {
+
+                            "name": false,
+                            "archivalDate": false
+                        }
+                    }
+                }},
+                {"name": "forums", "perms": {
+
+                    "createPosts": true,
+                    "managePosts": {
+
+                        "editTitle": false,
+                        "editContent": false,
+                        "editReactions": false,
+                        "editComments": false,
+                        "delete": false
+                    },
+                    "interactions": {
+
+                        "comment": true,
+                        "rate": true,
+                        "react": true
+                    },
+                    "checkTab": true
+                }},
+                {"name": "watch", "perms": {
+
+                    "checkTab": true,
+                    "postVideos": true,
+                    "manageVideos": {
+
+                        "editTitle": false,
+                        "editContent": false,
+                        "editReactions": false,
+                        "editComments": false,
+                        "delete": false
+                    }
+                }},
+                {"name": "calendar", "perms": {
+
+                    "createEvents": false,
+                    "manageEvents": {
+
+                        "manageName": false,
+                        "manageContent": false,
+                        "manageDate": false,
+                        "delete": false
+                    }
+                }},
+                {"name": "global", "perms": {
+
+                    "editServerProfile": {
+
+                        "editNick": true,
+                        "editPFP": true,
+                        "editBanner": true,
+                        "editBio": true,
+                        "editInterests": true
+                    },
+                    "manageMembers": {
+
+                        "editNick": false,
+                        "editPFP": false,
+                        "editBanner": false,
+                        "editBio": false,
+                        "editInterests": false,
+                        "mute": false,
+                        "overwritePerms": false
+                    },
+                    "manageServer": {
+
+                        "manageName": false,
+                        "manageAbout": false,
+                        "manageBanner": false,
+                        "manageIcon": false
+                    },
+                    "leveling": {
+
+                        "enabled": true,
+                        "multiplier": 1
+                    }
+                }}
+            ]},
+            "coOwner": {"name": "co owners", "color": "#2596be", "icon": "default'MEMBER'"},
             "all": []
         },
         "emojis": [],
@@ -105,6 +207,31 @@
 
                 "memberVideos": true
             }
+        },
+        "leveling": {
+
+            "amount": {
+
+                "chatMessage": {
+
+                    "min": 1,
+                    "max": 100
+                },
+                "forumPost": {
+
+                    "min": 100,
+                    "max": 1000
+                },
+                "video": {
+
+                    "min": 200,
+                    "max": 1250
+                }
+            },
+            "nextLevel": 10000,
+            "levelMultiplier": 1.5,
+            "rewards": [],
+            "levelUpMessage": "'USER' is now at level 'LEVEL'!"
         }
     }
 }

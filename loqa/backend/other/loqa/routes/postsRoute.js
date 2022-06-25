@@ -15,8 +15,8 @@ module.exports = router
 const getUserT = async (token) =>{
 
     const uToken = await Token.findOne({token: token})
+    if(!uToken) return null
     const user = await User.findById(uToken.userID)
-    nztk.log.normal(user, 2, '')
     return user
 }
 

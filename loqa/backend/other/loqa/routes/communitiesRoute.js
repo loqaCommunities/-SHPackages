@@ -17,6 +17,7 @@ module.exports = router
 const getUserT = async (token) =>{
 
     const uToken = await Token.findOne({token: token})
+    if(!uToken) return null
     const user = await User.findById(uToken.userID)
     return user
 }
@@ -44,10 +45,11 @@ router.post(`/create`, async (req, res) =>{
 
         const defaultRole = await new Role({
 
-            name: "people",
+            name: "cool people",
             communityID: newCommunity._id
         })
 
+        await defaultRole.permOverwrites.push({name: "global", perms: {leveling: {multiplier: 2}}})
         await defaultRole.save()
 
         const ownerMember = await new Member({
@@ -60,6 +62,8 @@ router.post(`/create`, async (req, res) =>{
         await ownerMember.save()
 
         await newCommunity.members.push(ownerMember._id)
+        await newCommunity.settings.leveling.rewards.push({level: 10, role: defaultRole._id})
+        await newCommunity.settings.roles.all.push(defaultRole._id)
 
         await newCommunity.save()
 
@@ -292,6 +296,48 @@ router.delete('/:id/kick', async (req, res) =>{
     }catch(err){
 
         nztk.log.error(err, 1, 'communities')
+        return res.status(500).json(err)
+    }
+})
+
+// get a member card
+
+router.get(`/:CID/members/:option/:id`, async (req, res) =>{
+
+    try{
+
+        const community = await Community.findById(req.params.CID)
+        if(!community) return res.status(400).json(`can't find a community with an id of ${req.params.id}`)
+
+        const curUser = await getUserT(req.body.token)
+        if(!curUser) return res.status(400).json(`you need to be logged in to do that`)
+
+        const curUserMember = await Member.find({communityID: community._id, userID: curUser._id})
+        if(!curUserMember) return res.status(400).json(`you need to be in this community to get a member card from it`)
+
+        switch(req.params.option){
+
+            case "UID":
+                const userMemberU = await Member.find({communityID: community._id, userID: req.params.id})
+                await !userMemberU && res.status(400).json(`can't find member`)
+                
+                res.status(200).json(userMemberU)
+            break
+
+            case "MID":
+                const userMemberM = await Member.findById(req.params.id)
+                if(!userMemberM) return res.status(400).json(`can't find member`)
+
+                res.status(200).json(userMemberM)
+            break
+
+            default:
+                return res.status(400).json(`you can search the member by either userID (UID) or memberID (MID)`)
+        }
+    }catch(err){
+
+        nztk.log.error(err, 1, "communities")
+        console.log(err)
         return res.status(500).json(err)
     }
 })
