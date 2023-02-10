@@ -82,7 +82,11 @@ router.post('/login', async (req, res) =>{
         const token = await Token.findOne({userID: user._id})
         !token && res.status(400).json(`can't find token`)
 
-        res.status(200).json(token)
+        res.status(200).json({
+
+            ID: user._id,
+            token: token.token
+        })
     }catch(err){
 
         res.status(500).json(err)
