@@ -3,8 +3,8 @@ const mongus = require('mongoose')
 const userSchema = new mongus.Schema({
 
     name: {type:String, required:true, min:2, max:20},
-    friendCode: {type:String, required:false, unique:true, min:5, max:20},
-    email: {type:String, required:true, unique:true, max:50},
+    friendCode: {type:String, required:false, unique:true},
+    email: {type:String, required:true, unique:true},
     password: {type:String, required:true, min:6, max:30},
     PFP: {type:String, required:false, default:"https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.UvobdGmUpxdAqYs_EcacWwHaEK%26pid%3DApi&f=1"},
     banner: {type:String, required:false, default:"https://i.ytimg.com/vi/tT7w2T6mFKc/maxresdefault.jpg"},
