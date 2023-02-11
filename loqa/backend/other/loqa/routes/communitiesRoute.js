@@ -27,7 +27,7 @@ const getUserT = async (token) =>{
 router.post(`/create`, async (req, res) =>{
 
     const user = await getUserT(req.body.token)
-    await !user && res.status(400).json("invalid token")
+    if(!user) return res.status(400).json("invalid token")
 
     if(!req.body.name || req.body.name.length < 5 || req.body.name.length > 200) return res.status(400).json(`invalid name`)
 
@@ -38,7 +38,10 @@ router.post(`/create`, async (req, res) =>{
             name: req.body.name,
             owner: user._id,
             about: req.body.about,
-            rules: req.body.rules
+            rules: req.body.rules,
+            icon: req.body.icon,
+            banner: req.body.banner, 
+            coOwners: req.body.coOwners
         })
         
         await newCommunity.save()
@@ -108,8 +111,7 @@ router.get(`/:id`, async (req, res) =>{
                 rules: community.rules,
                 name: community.name,
                 owner: community.owner,
-                about: community.about,
-                _id: community._id
+                about: community.about
             })
         }
     }catch(err){
