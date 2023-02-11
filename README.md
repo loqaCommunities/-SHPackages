@@ -22,4 +22,4 @@ i will make some docs shtuff about the api later
 - development: **rought**
 - to do: _a lot, we don't have an exact amount tho_
 - what repository can you get it from: [the default minusshell one](https://github.com/negative-zero-inft/minusshellRepo)
-- documentation: **NEEDED ASAP**
+- documentation: `under construction, can be found in this repository`
