@@ -128,7 +128,7 @@ router.post(`/:id/join`, async (req, res) =>{
     try{
 
         const user = await getUserT(req.body.token)
-        await !user && res.status(400).json(`couldn't validate the user`)
+        if(!user) return res.status(400).json("couldn't validate user")
 
         const community = await Community.findById(req.params.id)
         await !community && res.status(400).json(`can't find a community with the id of ${req.params.id}`)
@@ -178,7 +178,7 @@ router.delete(`/:id/`, async (req, res) =>{
     
         const user = await getUserT(req.body.token)
         nztk.log.normal(user._id, 2)
-        await !user && res.status(400).json(`couldn't check user`)
+        if(!user) return res.status(400).json("couldn't validate user")
         const UID = user._id
 
         nztk.log.warn(`${OID} = ${UID} (is the requester owner): ${OID == UID}`, 2)
@@ -206,7 +206,7 @@ router.delete('/:id/ban', async (req, res) =>{
     
         const user = await getUserT(req.body.token)
         nztk.log.normal(user._id, 2)
-        await !user && res.status(400).json(`couldn't check user`)
+        if(!user) return res.status(400).json("couldn't validate user")
         const UID = user._id
 
         const userMember = await Member.findOne({userID: req.body.user, communityID: community._id})
@@ -245,7 +245,7 @@ router.delete('/:id/unban', async (req, res) =>{
     
         const user = await getUserT(req.body.token)
         nztk.log.normal(user._id, 2)
-        await !user && res.status(400).json(`couldn't check user`)
+        if(!user) return res.status(400).json("couldn't validate user")
         const UID = user._id
 
         const userMember = await Member.findOne({userID: req.body.user, communityID: community._id})
@@ -282,7 +282,7 @@ router.delete('/:id/kick', async (req, res) =>{
     
         const user = await getUserT(req.body.token)
         nztk.log.normal(user._id, 2)
-        await !user && res.status(400).json(`couldn't check user`)
+        if(!user) return res.status(400).json("couldn't validate user")
         const UID = user._id
 
         const userMember = await Member.findOne({userID: req.body.user, communityID: community._id})
