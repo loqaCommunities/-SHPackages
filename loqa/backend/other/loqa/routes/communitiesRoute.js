@@ -108,6 +108,7 @@ router.get(`/:id`, async (req, res) =>{
             return res.status(200).json({
     
                 members: community.members.length,
+                memberCards: community.members,
                 rules: community.rules,
                 name: community.name,
                 owner: community.owner,
@@ -221,7 +222,6 @@ router.delete('/:id/ban', async (req, res) =>{
         if(!community.members.includes(userMember._id)) return res.status(400).json(`member isn't in this community`)
 
         const index = await community.members.indexOf(req.body.user)
-        await community.members.splice(index, 1)
         await community.bans.push(userMember._id)
         await community.save()
         res.status(200).json(`member was banned`)
@@ -295,7 +295,6 @@ router.delete('/:id/kick', async (req, res) =>{
         if(!community.members.includes(userMember._id)) return res.status(400).json(`member isn't in this community`)
 
         const index = await community.members.indexOf(req.body.user)
-        await community.members.splice(index, 1)
         await community.save()
         res.status(200).json(`member was kicked`)
     }catch(err){
