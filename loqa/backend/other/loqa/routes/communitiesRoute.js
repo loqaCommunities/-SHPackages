@@ -203,12 +203,10 @@ router.delete('/:id/ban', async (req, res) =>{
         const community = await Community.findById(req.params.id)
         nztk.log.normal(community.owner, 2)
         await !community && res.status(400).json(`can't find a community with an id of ${req.params.id}`)
-        const OID = community.owner
     
         const user = await getUserT(req.body.token)
         nztk.log.normal(user._id, 2)
         if(!user) return res.status(400).json("couldn't validate user")
-        const UID = user._id
 
         const userMember = await Member.findOne({userID: req.body.user, communityID: community._id})
         if(!userMember) return res.status(400).json(`couldn't get user member card`)
@@ -221,6 +219,8 @@ router.delete('/:id/ban', async (req, res) =>{
         if(community.bans.includes(userMember._id)) return res.status(400).json(`member is already banned`)
         if(!community.members.includes(userMember._id)) return res.status(400).json(`member isn't in this community`)
 
+        const index = await community.members.indexOf(req.body.user)
+        await community.members.splice(index, 1)
         await community.bans.push(userMember._id)
         await community.save()
         res.status(200).json(`member was banned`)
@@ -240,12 +240,10 @@ router.delete('/:id/unban', async (req, res) =>{
         const community = await Community.findById(req.params.id)
         nztk.log.normal(community.owner, 2)
         await !community && res.status(400).json(`can't find a community with an id of ${req.params.id}`)
-        const OID = community.owner
     
         const user = await getUserT(req.body.token)
         nztk.log.normal(user._id, 2)
         if(!user) return res.status(400).json("couldn't validate user")
-        const UID = user._id
 
         const userMember = await Member.findOne({userID: req.body.user, communityID: community._id})
         if(!userMember) return res.status(400).json(`couldn't get user member card`)
@@ -277,12 +275,10 @@ router.delete('/:id/kick', async (req, res) =>{
         const community = await Community.findById(req.params.id)
         nztk.log.normal(community.owner, 2)
         await !community && res.status(400).json(`can't find a community with an id of ${req.params.id}`)
-        const OID = community.owner
     
         const user = await getUserT(req.body.token)
         nztk.log.normal(user._id, 2)
         if(!user) return res.status(400).json("couldn't validate user")
-        const UID = user._id
 
         const userMember = await Member.findOne({userID: req.body.user, communityID: community._id})
         if(!userMember) return res.status(400).json(`couldn't get user member card`)
@@ -293,6 +289,8 @@ router.delete('/:id/kick', async (req, res) =>{
         if(!curUserMember.isOwner) return res.status(400).json(`invalid permissions`)
         if(!community.members.includes(userMember._id)) return res.status(400).json(`member isn't in this community`)
 
+        const index = await community.members.indexOf(req.body.user)
+        await community.members.splice(index, 1)
         await community.save()
         res.status(200).json(`member was kicked`)
     }catch(err){
