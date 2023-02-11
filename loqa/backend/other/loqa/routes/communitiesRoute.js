@@ -221,7 +221,6 @@ router.delete('/:id/ban', async (req, res) =>{
         if(community.bans.includes(userMember._id)) return res.status(400).json(`member is already banned`)
         if(!community.members.includes(userMember._id)) return res.status(400).json(`member isn't in this community`)
 
-        const index = await community.members.indexOf(req.body.user)
         await community.bans.push(userMember._id)
         await community.save()
         res.status(200).json(`member was banned`)
@@ -294,7 +293,6 @@ router.delete('/:id/kick', async (req, res) =>{
         if(!curUserMember.isOwner) return res.status(400).json(`invalid permissions`)
         if(!community.members.includes(userMember._id)) return res.status(400).json(`member isn't in this community`)
 
-        const index = await community.members.indexOf(req.body.user)
         await community.save()
         res.status(200).json(`member was kicked`)
     }catch(err){
